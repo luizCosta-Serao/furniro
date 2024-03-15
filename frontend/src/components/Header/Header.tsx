@@ -16,7 +16,7 @@ const Header = () => {
   }
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} container`}>
       <Link className={styles.logo} to='/' >
         <img src={LogoFurniro} alt="Furniro" />
       </Link>
