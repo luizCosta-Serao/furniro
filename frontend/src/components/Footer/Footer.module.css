@@ -1,5 +1,7 @@
 .footer {
+  margin-top: 3rem;
   border-top: 1px solid #9f9f9f;
+  padding: 1rem;
 }
 
 .infos {
