@@ -1,0 +1,30 @@
+.categories {
+  margin: 56px auto;
+}
+
+.title {
+  color: #333;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.description {
+  color: #666;
+  font-size: 1.15rem;
+  text-align: center;
+  font-weight: 400;
+  margin-bottom: 62px;
+}
+
+.listCategories {
+  display: flex;
+  gap: 1.15rem;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .listCategories {
+    flex-direction: column;
+  }
+}
