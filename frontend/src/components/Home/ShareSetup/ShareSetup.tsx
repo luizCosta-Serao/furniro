@@ -1,4 +1,3 @@
-import React from 'react'
 import ShareSetupImg from '../../../imgs/home/shareSetup/share_your_setup.png'
 import styles from './ShareSetup.module.css'
 
