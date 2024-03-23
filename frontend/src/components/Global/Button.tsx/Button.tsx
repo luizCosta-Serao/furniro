@@ -2,16 +2,21 @@ import React from 'react'
 import styles from './Button.module.css'
 
 type BtnProps = {
-  children: React.ReactNode
-  onClick?: () => void
+  children: React.ReactNode;
+  onClick?: () => void;
+  width?: number;
+  height?: number;
 }
 
 const Button = ({
   children,
-  onClick
+  onClick,
+  width,
+  height
 }: BtnProps ) => {
   return (
     <button
+    style={{width: `${width}px`, height: `${height}px`}}
       onClick={onClick}
       className={styles.globalBtn}
     >
