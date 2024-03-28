@@ -1,4 +1,3 @@
-import React from 'react'
 import HeroShop from '../components/Shop/Hero/HeroShop'
 import ShopProducts from '../components/Shop/ShopProducts'
 
