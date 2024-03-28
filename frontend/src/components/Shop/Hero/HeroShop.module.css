@@ -1,0 +1,29 @@
+.heroShop {
+  background-image: url('../../../imgs/shop/hero_shop.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 316px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.heroShop h1 {
+  font-size: 3rem;
+  color: #000;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.heroShop p {
+  font-size: 1rem;
+  color: #000;
+  font-weight: 500;
+}
+
+.heroShop p > span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+}
