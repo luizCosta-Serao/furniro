@@ -1,0 +1,23 @@
+.description {
+  border-top: 1px solid #9f9f9f;
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.description h2 {
+  color: #000;
+  font-size: 1.5rem;
+  font-weight: 500;
+  display: flex;
+  margin-bottom: 37px;
+}
+
+.description p {
+  font-size: 1rem;
+  color: #9f9f9f;
+  font-weight: 400;
+  margin-bottom: 30px;
+  text-align: center;
+}

@@ -83,6 +83,7 @@ const ShopProducts = () => {
           {allProducts.map((product, index) => {
             if (index < showing && index + 1 > showing - show ) {
               return <ProductItem
+                _id={product._id}
                 key={product._id}
                 name={product.name}
                 description={product.description}
