@@ -1,5 +1,5 @@
 import React from 'react'
-import { GET_PRODUCTS } from '../api'
+import { GET_PRODUCT, GET_PRODUCTS } from '../api'
 
 export type Product = {
   _id: string;
@@ -13,6 +13,8 @@ export type Product = {
 
 export type IProductsValues = {
   products: Product[] | null;
+  getSingleProduct: (id: string) => Promise<Product>;
+  filterCategory: (category: string) => Promise<Product[] | undefined>;
 }
 
 export const ProductsContext = React.createContext<IProductsValues | null>(null)
@@ -31,8 +33,20 @@ export const ProductsProvider = ({
     getProducts()
   }, [])
 
+  async function getSingleProduct(id: string) {
+    const data = await GET_PRODUCT(id)
+    return data
+  }
+
+  async function filterCategory(category: string) {
+    const data = products?.filter((product) => product.category === category)
+    return data
+  }
+
   const values = {
     products,
+    getSingleProduct,
+    filterCategory
   }
 
   return (

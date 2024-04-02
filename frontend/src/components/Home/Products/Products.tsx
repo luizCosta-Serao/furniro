@@ -31,6 +31,7 @@ const Products = () => {
       <ul className={styles.listProducts}>
         {products.map((product) => (
           <ProductItem
+            _id={product._id}
             key={product._id}
             name={product.name}
             description={product.description}
