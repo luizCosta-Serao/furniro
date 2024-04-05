@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import styles from './Inspiration.module.css'
-import Button from '../../Global/Button.tsx/Button'
+import Button from '../../Global/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import InspirationOne from '../../../imgs/home/inspiration/inspiration_2.png'
 import InspirationTwo from '../../../imgs/home/inspiration/inspiration_3.jpg'
