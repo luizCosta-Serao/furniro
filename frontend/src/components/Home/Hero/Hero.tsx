@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import Button from '../../Global/Button.tsx/Button'
+import Button from '../../Global/Button/Button'
 import styles from './Hero.module.css'
 
 const Hero = () => {

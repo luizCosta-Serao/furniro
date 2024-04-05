@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './ProductItem.module.css'
 import { Link } from 'react-router-dom';
+import { useProducts } from '../../../context/useProducts';
 
 type Product = {
   name: string;
@@ -18,6 +19,7 @@ const ProductItem = ({
   _id
 }: Product ) => {
   const [showHover, setShowHover] = React.useState(false)
+  const { addCart, cart } = useProducts()
 
   function backToTop() {
     window.scrollTo({
@@ -34,6 +36,15 @@ const ProductItem = ({
     setShowHover(false)
   }
 
+  async function getProductsCart() {
+    const products = cart?.find((item) => item.product._id === _id)
+    if (products) {
+      await addCart(_id, products.quantity + 1)
+    } else {
+      await addCart(_id, 1)
+    }
+  }
+
   return (
     <li className={styles.productItem} onMouseOver={trueHover} onMouseLeave={falseHover}>
       <img src={image} alt={name} />
@@ -44,7 +55,7 @@ const ProductItem = ({
       </div>
       {showHover ? (
         <div className={styles.actions}>
-          <span>Add to cart</span>
+          <span onClick={() => getProductsCart()}>Add to cart</span>
           <Link onClick={backToTop} to={`/shop/${_id}`}>View</Link>
         </div>
         ) : (

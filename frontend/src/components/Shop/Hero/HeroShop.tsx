@@ -1,11 +1,12 @@
-import styles from './HeroShop.module.css'
+import Hero from '../../Global/Hero/Hero'
 
 const HeroShop = () => {
   return (
-    <section className={styles.heroShop}>
-      <h1>Shop</h1>
-      <p>Home {'>'} <span>Shop</span></p>
-    </section>
+    <Hero
+      title='Shop'
+      firstPath='Home'
+      secondPath='Shop'
+    />      
   )
 }
 
