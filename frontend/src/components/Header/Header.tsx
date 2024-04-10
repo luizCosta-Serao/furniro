@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import LogoFurniro from '../../imgs/logo_furniro.svg'
 import Account from '../../imgs/header/mdi_account-alert-outline.svg'
 import Heart from '../../imgs/header/akar-icons_heart.svg'
-import Cart from '../../imgs/header/ant-design_shopping-cart-outlined.svg'
+import CartIcon from '../../imgs/header/ant-design_shopping-cart-outlined.svg'
 import Search from '../../imgs/header/akar-icons_search.svg'
 import styles from './Header.module.css'
 import Menu from '../../imgs/header/menu_FILL0_wght400_GRAD0_opsz24.svg'
@@ -15,6 +15,7 @@ const Header = () => {
   const [cartActive, setCartActive] = React.useState(false)
   const { cart, setCart } = useProducts()
   const [total, setTotal] = React.useState(0)
+  const { pathname } = useLocation()
 
   function showMenu() {
     setMenuActive(!menuActive)
@@ -61,6 +62,24 @@ const Header = () => {
     }
   }, [cart])
 
+  React.useEffect(() => {
+    setMenuActive(false)
+    setCartActive(false)
+  }, [pathname])
+
+  React.useEffect(() => {
+    function hideMenuAndCart() {
+      setCartActive(false)
+      setMenuActive(false)
+    }
+
+    window.addEventListener('resize', hideMenuAndCart)
+
+    return () => {
+      window.removeEventListener('resize', hideMenuAndCart)
+    }
+  }, [])
+
   return (
     <header className={`${styles.header} container`}>
       <Link className={styles.logo} to='/' >
@@ -79,14 +98,14 @@ const Header = () => {
         <span><img src={Account} alt="Account" /></span>
         <span><img src={Search} alt="Search" /></span>
         <span><img src={Heart} alt="Heart" /></span>
-        <span onClick={showCart}><img src={Cart} alt="Cart" /></span>
+        <span onClick={showCart}><img src={CartIcon} alt="Cart" /></span>
       </ul>
       {cartActive && (
         <div className={styles.cart}>
           <h2>Shopping Cart</h2>
           <ul>
             {cart && cart.map((product) => (
-              <li>
+              <li key={product.product._id}>
                 <img className={styles.imgProduct} src={product.product.image} alt={product.product.name} />
                 <div>
                   <h2>{product.product.name}</h2>
@@ -98,7 +117,9 @@ const Header = () => {
           </ul>
           <p className={styles.subtotal}>Subtotal <span>{total.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span></p>
           <div className={styles.cartActions}>
-            <button className={styles.checkout}>Checkout</button>
+            <Link to={'/checkout'}>
+              <button className={styles.checkout}>Checkout</button>
+            </Link>
           </div>
         </div>
       )}

@@ -6,6 +6,8 @@ import Home from './pages/Home'
 import Shop from './pages/Shop'
 import { ProductsProvider } from './context/ProductsContext'
 import SingleProduct from './pages/SingleProduct'
+import Checkout from './pages/Checkout'
+import CheckoutSuccess from './pages/CheckoutSuccess'
 
 function App() {
 
@@ -17,6 +19,8 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/shop' element={<Shop />} />
           <Route path='/shop/:id' element={<SingleProduct />} />
+          <Route path='/checkout' element={<Checkout />} />
+          <Route path='/checkout-success' element={<CheckoutSuccess />} />
         </Routes>
         <Footer />
       </BrowserRouter>
