@@ -8,6 +8,7 @@ import { ProductsProvider } from './context/ProductsContext'
 import SingleProduct from './pages/SingleProduct'
 import Checkout from './pages/Checkout'
 import CheckoutSuccess from './pages/CheckoutSuccess'
+import Contact from './pages/Contact'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path='/shop/:id' element={<SingleProduct />} />
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/checkout-success' element={<CheckoutSuccess />} />
+          <Route path='/contact' element={<Contact />} />
         </Routes>
         <Footer />
       </BrowserRouter>

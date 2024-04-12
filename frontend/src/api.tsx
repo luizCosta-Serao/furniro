@@ -34,3 +34,30 @@ export async function POST_CHECKOUT(cartItems: Cart[] | null) {
       if (error instanceof Error) console.log(error.message)
     }
 }
+
+export async function POST_CONTACT_MESSAGE(
+  name: string,
+  email: string,
+  subject: string,
+  message: string,
+  setError: React.Dispatch<React.SetStateAction<string | null>>
+)  {
+  try {
+    await fetch(`${url}/contact`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        subject,
+        message
+      })
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      setError(error.message)
+    }
+  }
+}
