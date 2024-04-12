@@ -1,0 +1,17 @@
+.success {
+  position: fixed;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  font-weight: 500;
+  background-color: #77dd77;
+  color: #fff;
+  animation: animaSuccess .3s forwards;
+}
+
+@keyframes animaSuccess {
+  from {
+    top: 0px;
+  } to {
+    top: 50px;
+  }
+}

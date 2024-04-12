@@ -5,11 +5,15 @@ const stripe = require('stripe')(process.env.STRIPE_API_SECRET)
 
 const ProductsController = require('./controllers/ProductsController')
 const ProductController = require('./controllers/ProductController')
+const ContactController = require('./controllers/ContactController')
 
 // Rotas Products
 routes.get('/products', ProductsController.read)
 routes.post('/products', ProductsController.create)
 routes.get('/products/:id', ProductController.read)
+
+// Rotas Contact
+routes.post('/contact', ContactController.create)
 
 // Rotas Stripe
 routes.post('/create-checkout-session', async (req, res) => {
