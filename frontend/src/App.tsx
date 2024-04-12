@@ -9,6 +9,7 @@ import SingleProduct from './pages/SingleProduct'
 import Checkout from './pages/Checkout'
 import CheckoutSuccess from './pages/CheckoutSuccess'
 import Contact from './pages/Contact'
+import About from './pages/About'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
           <Route path='/checkout' element={<Checkout />} />
           <Route path='/checkout-success' element={<CheckoutSuccess />} />
           <Route path='/contact' element={<Contact />} />
+          <Route path='/about' element={<About />} />
         </Routes>
         <Footer />
       </BrowserRouter>
