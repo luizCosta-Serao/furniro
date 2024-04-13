@@ -10,6 +10,7 @@ import Checkout from './pages/Checkout'
 import CheckoutSuccess from './pages/CheckoutSuccess'
 import Contact from './pages/Contact'
 import About from './pages/About'
+import Favorites from './pages/Favorites'
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
           <Route path='/checkout-success' element={<CheckoutSuccess />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/about' element={<About />} />
+          <Route path='/favorites' element={<Favorites />} />
         </Routes>
         <Footer />
       </BrowserRouter>

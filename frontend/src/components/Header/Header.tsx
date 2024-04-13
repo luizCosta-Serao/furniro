@@ -97,7 +97,7 @@ const Header = () => {
       <ul className={`${styles.actions}  ${menuActive ? styles.menuActive : ''}`}>
         <span><img src={Account} alt="Account" /></span>
         <span><img src={Search} alt="Search" /></span>
-        <span><img src={Heart} alt="Heart" /></span>
+        <span><Link to={'/favorites'}><img src={Heart} alt="Heart" /></Link></span>
         <span onClick={showCart}><img src={CartIcon} alt="Cart" /></span>
       </ul>
       {cartActive && (

@@ -23,6 +23,9 @@ export type IProductsValues = {
   cart: Cart[] | null;
   addCart: (id: string, quantity: number) => Promise<void>;
   setCart: React.Dispatch<React.SetStateAction<Cart[] | null>>;
+  addFavorites: (id: string) => void;
+  removeFavorites: (id: string) => void;
+  favorites: Product[] | null;
 }
 
 export const ProductsContext = React.createContext<IProductsValues | null>(null)
@@ -32,6 +35,7 @@ export const ProductsProvider = ({
 }: { children: React.ReactNode }) => {
   const [products, setProducts] = React.useState<Product[] | null>(null)
   const [cart, setCart] = React.useState<Cart[] | null>(null)
+  const [favorites, setFavorites] = React.useState<Product[] | null>(null)
 
   React.useEffect(() => {
     async function getProducts() {
@@ -67,6 +71,22 @@ export const ProductsProvider = ({
       }
   }
 
+  function addFavorites(id: string) {
+    const data = products?.find((product) => product._id === id)
+    if (data && !favorites) {
+      setFavorites([data])
+    } else if(favorites && data) {
+      setFavorites([...favorites, data])
+    }
+  }
+
+  function removeFavorites(id: string) {
+    const data = favorites?.filter((favorite) => favorite._id !== id)
+    if (data) {
+      setFavorites([...data])
+    }
+  }
+
   const values = {
     products,
     getSingleProduct,
@@ -74,6 +94,9 @@ export const ProductsProvider = ({
     cart,
     addCart,
     setCart,
+    addFavorites,
+    removeFavorites,
+    favorites
   }
 
   return (
