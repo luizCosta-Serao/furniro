@@ -83,6 +83,33 @@
   margin-top: 30px;
 }
 
+.actions .toFavorite {
+  max-width: 80px;
+  width: 100%;
+  height: 50px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 59%;
+  left: 50%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 1s;
+}
+
+.actions img {
+  width: 30px;
+  height: 45px;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.actions img:hover {
+  scale: 1.2;
+}
+
 .actions a {
   top: 42%;
 }

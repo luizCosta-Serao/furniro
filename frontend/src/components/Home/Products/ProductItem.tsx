@@ -2,6 +2,8 @@ import React from 'react'
 import styles from './ProductItem.module.css'
 import { Link } from 'react-router-dom';
 import { useProducts } from '../../../context/useProducts';
+import FavoritePink from '../../../imgs/favorites/favorite-pink.png'
+import FavoriteRed from '../../../imgs/favorites/favorite-red.png'
 
 type Product = {
   name: string;
@@ -19,13 +21,32 @@ const ProductItem = ({
   _id
 }: Product ) => {
   const [showHover, setShowHover] = React.useState(false)
-  const { addCart, cart } = useProducts()
+  const { addCart, cart, addFavorites, removeFavorites, favorites } = useProducts()
+  const [iconFavorite, setIconFavorite] = React.useState(FavoritePink)
 
   function backToTop() {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     })
+  }
+
+  React.useEffect(() => {
+    const findFavorite = favorites?.find((favorite) => favorite._id === _id)
+    if (findFavorite) {
+      setIconFavorite(FavoriteRed)
+    }
+  }, [favorites, _id])
+
+  function toFavorite() {
+    if (iconFavorite === FavoritePink) {
+      setIconFavorite(FavoriteRed)
+      addFavorites(_id)
+    } else {
+      setIconFavorite(FavoritePink)
+      removeFavorites(_id)
+      console.log(favorites)
+    }
   }
 
   function trueHover() {
@@ -57,6 +78,9 @@ const ProductItem = ({
         <div className={styles.actions}>
           <span onClick={() => getProductsCart()}>Add to cart</span>
           <Link onClick={backToTop} to={`/shop/${_id}`}>View</Link>
+          <div className={styles.toFavorite}>
+            <img onClick={toFavorite} src={iconFavorite} alt="Favorite" />
+          </div>
         </div>
         ) : (
           ''
