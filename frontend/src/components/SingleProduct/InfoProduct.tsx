@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom'
 import styles from './InfoProduct.module.css'
 import ArrowRight from '../../imgs/arrow_right.svg'
 import Stars from '../../imgs/stars.png'
+import { useUser } from '../../context/useUser'
+import Fail from '../Helper/Fail'
 
 const InfoProduct = () => {
   const [product, setProduct] = React.useState<Product | null>(null)
@@ -13,6 +15,28 @@ const InfoProduct = () => {
   const [color, setColor] = React.useState('purple')
   const { getSingleProduct } = useProducts()
   const { id } = useParams()
+  const { login } = useUser()
+  const { cart, addCart } = useProducts()
+  const [failMessage, setFailMessage] = React.useState('')
+  const [fail, setFail] = React.useState(false)
+
+  async function getProductsCart() {
+    if (!login) {
+      setFailMessage('login to add to cart')
+      setFail(true)
+      setTimeout(() => {
+        setFail(false)
+        setFailMessage('')
+      }, 2000)
+    } else {
+      const products = cart?.find((item) => item.product._id === id)
+      if (products && id) {
+        await addCart(id, products.quantity + 1)
+      } else if (id) {
+        await addCart(id, 1)
+      }
+    }
+  }
 
   React.useEffect(() => {
     async function getProduct() {
@@ -64,10 +88,10 @@ const InfoProduct = () => {
             <li onClick={() => setColor('purple')} className={`${styles.colorOne} ${color === 'purple' ? styles.colorActive : ''}`}></li>
             <li onClick={() => setColor('black')} className={`${styles.colorTwo}  ${color === 'black' ? styles.colorActive : ''}`}></li>
             <li onClick={() => setColor('golden')} className={`${styles.colorThree}  ${color === 'golden' ? styles.colorActive : ''}`}></li>
-          </ul>
+          </ul> 
           <div className={styles.buyActions}>
             <button className={styles.quantity}><span onClick={removeQuantity}>-</span> {quantity} <span onClick={addQuantity}>+</span></button>
-            <button className={styles.addCart}>Add To Cart</button>
+            <button onClick={getProductsCart} className={styles.addCart}>Add To Cart</button>
           </div>
           <div className={styles.inStock}>
             Stock: {product.stock}
@@ -78,6 +102,7 @@ const InfoProduct = () => {
           </div>
         </div>
       </div>
+      {fail && <Fail>{failMessage}</Fail>}
     </section>
   )
 }

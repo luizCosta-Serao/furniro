@@ -1,7 +1,7 @@
 import React, { FormEvent } from 'react'
 import styles from './FormContact.module.css'
 import { url } from '../../api'
-import Success from './Success'
+import Success from '../Helper/Success'
 
 type ErrorMessage = {
   message: string;
@@ -46,19 +46,6 @@ const FormContact = () => {
         setSuccess(false)
       }, 3000)
     }
-    /*
-    setError(null)
-    try {
-      await POST_CONTACT_MESSAGE(name, email, subject, message, setError)
-      setSuccess(true)
-    } catch (error) {
-      setSuccess(false)
-    } finally {
-      window.setTimeout(() => {
-        setSuccess(false)
-      }, 3000)
-    }
-    */
   }
 
   return (
@@ -77,7 +64,7 @@ const FormContact = () => {
 
       {error && <p style={{color: 'red', marginBottom: '1rem', fontWeight: '500', fontSize: '1.1rem'}}>{error}</p>}
       <button className={styles.submit} type='submit' onClick={sendMessage}>Submit</button>
-      {success && <Success />}
+      {success && <Success>Message sent successfully</Success>}
     </form>
   )
 }
