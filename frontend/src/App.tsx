@@ -11,10 +11,14 @@ import CheckoutSuccess from './pages/CheckoutSuccess'
 import Contact from './pages/Contact'
 import About from './pages/About'
 import Favorites from './pages/Favorites'
+import Signup from './pages/Signup'
+import Login from './pages/Login'
+import { IUserContextProvider } from './context/UserContext'
 
 function App() {
 
   return (
+    <IUserContextProvider>
     <ProductsProvider>
       <BrowserRouter>
         <Header />
@@ -27,10 +31,13 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/about' element={<About />} />
           <Route path='/favorites' element={<Favorites />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
         <Footer />
       </BrowserRouter>
     </ProductsProvider>
+    </IUserContextProvider>
   )
 }
 

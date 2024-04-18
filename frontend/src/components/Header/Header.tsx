@@ -3,17 +3,21 @@ import LogoFurniro from '../../imgs/logo_furniro.svg'
 import Account from '../../imgs/header/mdi_account-alert-outline.svg'
 import Heart from '../../imgs/header/akar-icons_heart.svg'
 import CartIcon from '../../imgs/header/ant-design_shopping-cart-outlined.svg'
-import Search from '../../imgs/header/akar-icons_search.svg'
 import styles from './Header.module.css'
 import Menu from '../../imgs/header/menu_FILL0_wght400_GRAD0_opsz24.svg'
+import Logout from '../../imgs/header/logout.svg'
 import React from 'react'
 import { useProducts } from '../../context/useProducts'
 import DeleteSVG from '../../imgs/delete.svg'
+import { useUser } from '../../context/useUser'
+import Fail from '../Helper/Fail'
 
 const Header = () => {
   const [menuActive, setMenuActive] = React.useState(false)
   const [cartActive, setCartActive] = React.useState(false)
+  const [fail, setFail] = React.useState(false)
   const { cart, setCart } = useProducts()
+  const { data, login, userLogout } = useUser()
   const [total, setTotal] = React.useState(0)
   const { pathname } = useLocation()
 
@@ -22,7 +26,14 @@ const Header = () => {
   }
 
   function showCart() {
-    setCartActive(!cartActive)
+    if (!login) {
+      setFail(true)
+      setTimeout(() => {
+        setFail(false)
+      }, 2000)
+    } else {
+      setCartActive(!cartActive)
+    }
   }
 
   function deleteProduct(id: string) {
@@ -41,7 +52,6 @@ const Header = () => {
           }
         }
       })
-      console.log(mapProducts)
       mapProducts && setCart(mapProducts)
     } else {
       const products = cart?.filter((item) => {
@@ -50,6 +60,13 @@ const Header = () => {
       products && setCart(products)
     }
   }
+
+  React.useEffect(() => {
+    if (login) {
+      const cartLocal = JSON.parse(window.localStorage.getItem('cart') || '')
+      setCart(cartLocal)
+    }
+  }, [login, setCart])
 
   React.useEffect(() => {
     const valorTotal = cart?.reduce((accum, item) => {
@@ -95,12 +112,18 @@ const Header = () => {
         </ul>
       </nav>
       <ul className={`${styles.actions}  ${menuActive ? styles.menuActive : ''}`}>
-        <span><img src={Account} alt="Account" /></span>
-        <span><img src={Search} alt="Search" /></span>
+        {login ? (
+          <span style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+            {data &&  data.name}
+            <img onClick={userLogout} src={Logout} alt="Logout" />
+          </span>
+        ) : (
+          <span><Link to={'/signup'}><img src={Account} alt="Account" /></Link></span>
+        )}
         <span><Link to={'/favorites'}><img src={Heart} alt="Heart" /></Link></span>
         <span onClick={showCart}><img src={CartIcon} alt="Cart" /></span>
       </ul>
-      {cartActive && (
+      {cartActive && login ? (
         <div className={styles.cart}>
           <h2>Shopping Cart</h2>
           <ul>
@@ -122,7 +145,10 @@ const Header = () => {
             </Link>
           </div>
         </div>
+      ) : (
+        ''
       )}
+      {fail && <Fail>login to access</Fail>}
     </header>
   )
 }
