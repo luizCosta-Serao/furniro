@@ -21,8 +21,16 @@ const Header = () => {
   const [total, setTotal] = React.useState(0)
   const { pathname } = useLocation()
 
+  React.useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }, [pathname])
+
   function showMenu() {
     setMenuActive(!menuActive)
+    setCartActive(false)
   }
 
   function showCart() {
@@ -98,57 +106,60 @@ const Header = () => {
   }, [])
 
   return (
-    <header className={`${styles.header} container`}>
-      <Link className={styles.logo} to='/' >
-        <img src={LogoFurniro} alt="Furniro" />
-      </Link>
-      <button onClick={showMenu} className={`${styles.menuMobile} ${menuActive ? styles.menuActive : ''}`}><img src={Menu} alt="Menu" /></button>
-      <nav className={`${styles.nav}  ${menuActive ? styles.menuActive : ''}`}>
-        <ul>
-          <li><Link to='/'>Home</Link></li>
-          <li><Link to='/shop'>Shop</Link></li>
-          <li><Link to='/about'>About</Link></li>
-          <li><Link to='/contact'>Contact</Link></li>
-        </ul>
-      </nav>
-      <ul className={`${styles.actions}  ${menuActive ? styles.menuActive : ''}`}>
-        {login ? (
-          <span style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
-            {data &&  data.name}
-            <img onClick={userLogout} src={Logout} alt="Logout" />
-          </span>
-        ) : (
-          <span><Link to={'/signup'}><img src={Account} alt="Account" /></Link></span>
-        )}
-        <span><Link to={'/favorites'}><img src={Heart} alt="Heart" /></Link></span>
-        <span onClick={showCart}><img src={CartIcon} alt="Cart" /></span>
-      </ul>
-      {cartActive && login ? (
-        <div className={styles.cart}>
-          <h2>Shopping Cart</h2>
+    <header className={`${styles.header}`}>
+      <section className='container'>
+
+        <Link className={styles.logo} to='/' >
+          <img src={LogoFurniro} alt="Furniro" />
+        </Link>
+        <button onClick={showMenu} className={`${styles.menuMobile} ${menuActive ? styles.menuActive : ''}`}><img src={Menu} alt="Menu" /></button>
+        <nav className={`${styles.nav}  ${menuActive ? styles.menuActive : ''}`}>
           <ul>
-            {cart && cart.map((product) => (
-              <li key={product.product._id}>
-                <img className={styles.imgProduct} src={product.product.image} alt={product.product.name} />
-                <div>
-                  <h2>{product.product.name}</h2>
-                  <p className={styles.priceProduct}><span className={styles.quantityProduct}>{product.quantity} x </span> {product.product.price}</p>
-                </div>
-                <img className={styles.deleteProduct} onClick={() => deleteProduct(product.product._id)} src={DeleteSVG} alt="X" />
-              </li>
-            ))}
+            <li><Link to='/'>Home</Link></li>
+            <li><Link to='/shop'>Shop</Link></li>
+            <li><Link to='/about'>About</Link></li>
+            <li><Link to='/contact'>Contact</Link></li>
           </ul>
-          <p className={styles.subtotal}>Subtotal <span>{total.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span></p>
-          <div className={styles.cartActions}>
-            <Link to={'/checkout'}>
-              <button className={styles.checkout}>Checkout</button>
-            </Link>
+        </nav>
+        <ul className={`${styles.actions}  ${menuActive ? styles.menuActive : ''}`}>
+          {login ? (
+            <span style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+              {data &&  data.name}
+              <img onClick={userLogout} src={Logout} alt="Logout" />
+            </span>
+          ) : (
+            <span><Link to={'/signup'}><img src={Account} alt="Account" /></Link></span>
+          )}
+          <span><Link to={'/favorites'}><img src={Heart} alt="Heart" /></Link></span>
+          <span onClick={showCart}><img src={CartIcon} alt="Cart" /></span>
+        </ul>
+        {cartActive && login ? (
+          <div className={styles.cart}>
+            <h2>Shopping Cart</h2>
+            <ul>
+              {cart && cart.map((product) => (
+                <li key={product.product._id}>
+                  <img className={styles.imgProduct} src={product.product.image} alt={product.product.name} />
+                  <div>
+                    <h2>{product.product.name}</h2>
+                    <p className={styles.priceProduct}><span className={styles.quantityProduct}>{product.quantity} x </span> {product.product.price}</p>
+                  </div>
+                  <img className={styles.deleteProduct} onClick={() => deleteProduct(product.product._id)} src={DeleteSVG} alt="X" />
+                </li>
+              ))}
+            </ul>
+            <p className={styles.subtotal}>Subtotal <span>{total.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</span></p>
+            <div className={styles.cartActions}>
+              <Link to={'/checkout'}>
+                <button className={styles.checkout}>Checkout</button>
+              </Link>
+            </div>
           </div>
-        </div>
-      ) : (
-        ''
-      )}
-      {fail && <Fail>login to access</Fail>}
+        ) : (
+          ''
+        )}
+        {fail && <Fail>login to access</Fail>}
+      </section>
     </header>
   )
 }
