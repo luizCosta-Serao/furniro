@@ -7,8 +7,8 @@ require('dotenv').config()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-app.use(cors())
 const app = express()
+app.use(cors())
 require('./src/config/dbConfig')
 
 app.use(express.json())
