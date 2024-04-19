@@ -108,7 +108,6 @@ const Header = () => {
   return (
     <header className={`${styles.header}`}>
       <section className='container'>
-
         <Link className={styles.logo} to='/' >
           <img src={LogoFurniro} alt="Furniro" />
         </Link>

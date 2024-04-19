@@ -7,10 +7,10 @@ require('dotenv').config()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+app.use(cors())
 const app = express()
 require('./src/config/dbConfig')
 
-app.use(cors())
 app.use(express.json())
 app.use(routes)
 app.use('/public', express.static(path.join(__dirname, 'public')))

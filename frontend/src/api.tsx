@@ -1,6 +1,6 @@
 import { Cart, Product } from "./context/ProductsContext"
 
-export const url = 'http://localhost:3333'
+export const url = 'https://furniro-13x5.onrender.com'
 
 export async function GET_PRODUCTS() {
   const response = await fetch(`${url}/products`)
