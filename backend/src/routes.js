@@ -1,5 +1,8 @@
 const express = require('express')
 const routes = express.Router()
+const app = express()
+const cors = require('cors')
+app.use()
 require('dotenv').config()
 const stripe = require('stripe')(process.env.STRIPE_API_SECRET)
 
