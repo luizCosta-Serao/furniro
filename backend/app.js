@@ -15,6 +15,12 @@ app.use(express.json())
 app.use(routes)
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
+app.get('/' , async (req, res) => {
+  res.status(200).json({
+    ok: 'Tudo certo!'
+  })
+})
+
 // Models
 const User = require('./src/models/UserData')
 
