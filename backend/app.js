@@ -172,6 +172,6 @@ app.post('/auth/login', async (req, res) => {
 })
 
 
-app.listen(3333, () => {
+app.listen(process.env.PORT || 3333, () => {
   console.log('Servidor conectado')
 })
