@@ -8,9 +8,9 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const app = express()
-app.use(cors())
 require('./src/config/dbConfig')
 
+app.use(cors())
 app.use(express.json())
 app.use(routes)
 app.use('/public', express.static(path.join(__dirname, 'public')))
