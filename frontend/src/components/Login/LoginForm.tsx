@@ -6,17 +6,17 @@ import { useUser } from "../../context/useUser"
 const LoginForm = () => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const { loginUser, error } = useUser()
+  const { loginUser, error, data } = useUser()
   //const navigate = useNavigate()
 
   async function login(e: FormEvent) {
     //const response = 
     try {
       await loginUser(email, password, e)
-      console.log('ok')
+      console.log(data)
     } catch(err) {
       if (err instanceof Error) {
-        console.log(err.message)
+        console.log('fail')
       }
     }
     /*
