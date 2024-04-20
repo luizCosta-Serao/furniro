@@ -11,7 +11,7 @@ const LoginForm = () => {
 
   async function login(e: FormEvent) {
     const response = await loginUser(email, password, e)
-    if (response) {
+    if (response === true) {
       navigate('/')
       window.scrollTo({
         top: 0,
