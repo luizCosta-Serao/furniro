@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FormEvent } from "react"
 import styles from './LoginForm.module.css'
 import { useUser } from "../../context/useUser"
 //import { useNavigate } from "react-router-dom"
@@ -9,10 +9,16 @@ const LoginForm = () => {
   const { loginUser, error } = useUser()
   //const navigate = useNavigate()
 
-  /*
   async function login(e: FormEvent) {
     //const response = 
-    await loginUser(email, password, e)
+    try {
+      await loginUser(email, password, e)
+      console.log('ok')
+    } catch(err) {
+      if (err instanceof Error) {
+        console.log(err.message)
+      }
+    }
     /*
     if (response === true) {
       navigate('/')
@@ -21,12 +27,12 @@ const LoginForm = () => {
         behavior: 'smooth' 
       })
     }
+    */
   }
-  */
 
   return (
     <section className={`${styles.loginForm} container`}>
-      <form method="POST" className={styles.form} onSubmit={(e) => loginUser(email, password, e)}>
+      <form method="POST" className={styles.form} onSubmit={login}>
         <label htmlFor="email">Email</label>
         <input type="email" id="email" name="email" placeholder="Your email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
