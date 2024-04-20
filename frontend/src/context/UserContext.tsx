@@ -19,7 +19,7 @@ type GetUser = {
 
 
 type IUserValues = {
-  loginUser: (email: string, password: string, e: FormEvent) => Promise<void>;
+  loginUser: (email: string, password: string, e: FormEvent) => Promise<boolean | undefined>;
   error: string | null;
   data: GetUser | null;
   getUser: (id: string) => Promise<void>;
@@ -75,10 +75,12 @@ export const IUserContextProvider = ({
       window.localStorage.setItem('token', json.token)
       getUser(json._id)
       setLogin(true)
+      return true
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message)
         setLogin(false)
+        return false
       }
     }
   }
