@@ -69,17 +69,20 @@ export const IUserContextProvider = ({
       })
       if (!response.ok) {
         const json = await response.json() as ErrorLogin
+        console.log('response.ok not ok')
         throw new Error(json.error)
       }
       const json = await response.json() as SuccessLogn
       window.localStorage.setItem('token', json.token)
       getUser(json._id)
       setLogin(true)
+      console.log('alright')
       return true
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message)
         setLogin(false)
+        console.log('catch error')
         return false
       }
     }
