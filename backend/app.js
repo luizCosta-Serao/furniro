@@ -154,9 +154,9 @@ app.post('/auth/login', async (req, res) => {
   }
 
   try {
-    const token = jwt.sign({
+    const token = JSON.parse(jwt.sign({
       id: user._id
-    }, process.env.SECRET_JWT)
+    }, process.env.SECRET_JWT))
 
     return res.status(200).json({
       success: 'Autenticação realizada com sucesso',
