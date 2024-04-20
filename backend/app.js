@@ -154,18 +154,19 @@ app.post('/auth/login', async (req, res) => {
   }
 
   try {
-    const token = JSON.parse(jwt.sign({
+    const secret = process.env.SECRET_JWT
+    const token = jwt.sign({
       id: user._id
-    }, process.env.SECRET_JWT))
+    }, secret)
 
-    return res.status(200).json({
+    res.status(200).json({
       success: 'Autenticação realizada com sucesso',
       token,
       _id: user._id
     })
   } catch (error) {
     res.status(500).json({
-      error: 'Ocorreu um erro no servidor, tente novamente mais tarde'
+      error: 'Ocorreu um erro no servidor, tente novamente mais tarde',
     })
   }
 })
