@@ -22,7 +22,7 @@ type IUserValues = {
   loginUser: (email: string, password: string, e: FormEvent) => Promise<boolean | undefined>;
   error: string | null;
   data: GetUser | null;
-  getUser: (id: string) => Promise<void>;
+  getUser: (id: string, token: string) => Promise<void>;
   login: boolean;
   userLogout: () => void;
 }
@@ -42,8 +42,7 @@ export const IUserContextProvider = ({
     setLogin(false)
   }
 
-  async function getUser(id: string) {
-    const token = window.localStorage.getItem('token')
+  async function getUser(id: string, token: string) {
     const response = await fetch(`${url}/user/${id}`, {
       method: 'GET',
       headers: {
@@ -73,7 +72,7 @@ export const IUserContextProvider = ({
       }
       const json = await response.json() as SuccessLogn
       window.localStorage.setItem('token', json.token)
-      await getUser(json._id)
+      await getUser(json._id, json.token)
       setLogin(true)
       return true
     } catch (error) {
