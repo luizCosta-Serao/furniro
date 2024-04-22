@@ -20,7 +20,7 @@ const User = require('./src/models/UserData')
 // Private Route
 app.get('/user/:id', checkToken ,async (req, res) => {
   const { id } = req.params
-
+ 
   // Check if user exists
   const user = await User.findById(id, '-password')
 

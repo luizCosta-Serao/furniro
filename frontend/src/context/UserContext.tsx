@@ -48,6 +48,7 @@ export const IUserContextProvider = ({
       headers: {
         authorization: 'Bearer ' + token
       },
+      mode: 'no-cors'
     })
     const json = await response.json() as GetUser
     setData(json)
@@ -64,7 +65,8 @@ export const IUserContextProvider = ({
         body: JSON.stringify({
           email: email,
           password: password
-        })
+        }),
+        mode: 'no-cors'
       })
       if (!response.ok) {
         const json = await response.json() as ErrorLogin
