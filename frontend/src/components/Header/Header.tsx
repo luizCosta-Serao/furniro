@@ -123,7 +123,7 @@ const Header = () => {
         <ul className={`${styles.actions}  ${menuActive ? styles.menuActive : ''}`}>
           {login && data ? (
             <span style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
-              <p>alright</p>
+              <p>{data.name}</p>
               <img onClick={userLogout} src={Logout} alt="Logout" />
             </span>
           ) : (

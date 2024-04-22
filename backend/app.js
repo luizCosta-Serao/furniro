@@ -20,6 +20,9 @@ const User = require('./src/models/UserData')
 // Private Route
 app.get('/user/:id', checkToken ,async (req, res) => {
   const { id } = req.params
+  res.setHeader("Access-Control-Allow-Origin", "*")
+  res.setHeader("Access-Control-Allow-Credentials", true )
+  
  
   // Check if user exists
   const user = await User.findById(id, '-password')
@@ -35,6 +38,8 @@ app.get('/user/:id', checkToken ,async (req, res) => {
 
 function checkToken(req, res, next) {
   const authHeader = req.headers['authorization']
+  res.setHeader("Access-Control-Allow-Origin", "*")
+  res.setHeader("Access-Control-Allow-Credentials", true )
   const token = authHeader && authHeader.split(' ')[1]
 
   if (!token) {
@@ -121,6 +126,8 @@ app.post('/auth/register', async (req, res) => {
 // Login User
 app.post('/auth/login', async (req, res) => {
   const { email, password } = req.body
+  res.setHeader("Access-Control-Allow-Origin", "*")
+  res.setHeader("Access-Control-Allow-Credentials", true )
 
   if (!email) {
     return res.status(422).json({
