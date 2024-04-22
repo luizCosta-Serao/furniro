@@ -121,9 +121,9 @@ const Header = () => {
           </ul>
         </nav>
         <ul className={`${styles.actions}  ${menuActive ? styles.menuActive : ''}`}>
-          {login ? (
+          {login && data ? (
             <span style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
-              {data &&  data.name}
+              <p>alright</p>
               <img onClick={userLogout} src={Logout} alt="Logout" />
             </span>
           ) : (
