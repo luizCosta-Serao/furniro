@@ -36,10 +36,11 @@ app.get('/user/:id', checkToken ,async (req, res) => {
 function checkToken(req, res, next) {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
-  res.set({
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-  })
+  res.setHeader("Access-Control-Allow-Origin", "https://furniro-gilt.vercel.app/");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   if (!token) {
     return res.status(401).json({
       error: 'Acesso negado'
