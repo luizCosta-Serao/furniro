@@ -20,6 +20,10 @@ const User = require('./src/models/UserData')
 // Private Route
 app.get('/user/:id', checkToken ,async (req, res) => {
   const { id } = req.params
+  res.set({
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  })
  
   // Check if user exists
   const user = await User.findById(id, '-password')
@@ -120,6 +124,10 @@ app.post('/auth/register', async (req, res) => {
 // Login User
 app.post('/auth/login', async (req, res) => {
   const { email, password } = req.body
+  res.set({
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  })
 
   if (!email) {
     return res.status(422).json({
