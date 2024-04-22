@@ -30,13 +30,13 @@ app.get('/user/:id', checkToken ,async (req, res) => {
     })
   }
 
-  return res.json(JSON.parse(user))
+  return res.json(user)
 })
 
 function checkToken(req, res, next) {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.split(' ')[1]
-  
+
   if (!token) {
     return res.status(401).json({
       error: 'Acesso negado'
