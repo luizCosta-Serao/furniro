@@ -69,12 +69,14 @@ const Header = () => {
     }
   }
 
+  /*
   React.useEffect(() => {
     if (login) {
       const cartLocal = JSON.parse(window.localStorage.getItem('cart') || '')
       setCart(cartLocal)
     }
   }, [login, setCart])
+  */
 
   React.useEffect(() => {
     const valorTotal = cart?.reduce((accum, item) => {
