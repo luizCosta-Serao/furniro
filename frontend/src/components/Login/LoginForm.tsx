@@ -1,18 +1,16 @@
 import React, { FormEvent } from "react"
 import styles from './LoginForm.module.css'
 import { useUser } from "../../context/useUser"
-//import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const LoginForm = () => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const { loginUser, error } = useUser()
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
 
   async function login(e: FormEvent) {
-    //const response = 
-    await loginUser(email, password, e)
-    /*
+    const response = await loginUser(email, password, e)
     if (response === true) {
       navigate('/')
       window.scrollTo({
@@ -20,7 +18,6 @@ const LoginForm = () => {
         behavior: 'smooth' 
       })
     }
-    */
   }
 
   return (
