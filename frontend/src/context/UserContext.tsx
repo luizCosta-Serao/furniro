@@ -50,6 +50,7 @@ export const IUserContextProvider = ({
       }
     })
     const json = await response.json() as GetUser
+    console.log(json)
     setData(json)
   }
 
@@ -71,6 +72,7 @@ export const IUserContextProvider = ({
         throw new Error(json.error)
       }
       const json = await response.json() as SuccessLogn
+      console.log(json)
       window.localStorage.setItem('token', json.token)
       await getUser(json._id, json.token)
       setLogin(true)
