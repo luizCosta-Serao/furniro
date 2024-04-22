@@ -47,8 +47,7 @@ export const IUserContextProvider = ({
       method: 'GET',
       headers: {
         authorization: 'Bearer ' + token
-      },
-      mode: 'no-cors'
+      }
     })
     const json = await response.json() as GetUser
     setData(json)
