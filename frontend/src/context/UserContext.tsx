@@ -48,7 +48,7 @@ export const IUserContextProvider = ({
       method: 'GET',
       headers: {
         authorization: 'Bearer ' + token
-      }
+      },
     })
     const json = await response.json() as GetUser
     setData(json)
@@ -73,7 +73,7 @@ export const IUserContextProvider = ({
       }
       const json = await response.json() as SuccessLogn
       window.localStorage.setItem('token', json.token)
-      getUser(json._id)
+      await getUser(json._id)
       setLogin(true)
       return true
     } catch (error) {
