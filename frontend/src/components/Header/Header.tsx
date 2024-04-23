@@ -16,7 +16,7 @@ const Header = () => {
   const [menuActive, setMenuActive] = React.useState(false)
   const [cartActive, setCartActive] = React.useState(false)
   const [fail, setFail] = React.useState(false)
-  const { cart, setCart } = useProducts()
+  const { cart, setCart, favorites } = useProducts()
   const { data, login, userLogout } = useUser()
   const [total, setTotal] = React.useState(0)
   const { pathname } = useLocation()
@@ -26,7 +26,9 @@ const Header = () => {
       top: 0,
       behavior: 'smooth'
     })
-  }, [pathname])
+    console.log(cart)
+    console.log(favorites)
+  }, [pathname, cart, favorites])
 
   function showMenu() {
     setMenuActive(!menuActive)
