@@ -16,7 +16,7 @@ const Header = () => {
   const [menuActive, setMenuActive] = React.useState(false)
   const [cartActive, setCartActive] = React.useState(false)
   const [fail, setFail] = React.useState(false)
-  const { cart, setCart, favorites } = useProducts()
+  const { cart, setCart } = useProducts()
   const { data, login, userLogout } = useUser()
   const [total, setTotal] = React.useState(0)
   const { pathname } = useLocation()
@@ -26,9 +26,7 @@ const Header = () => {
       top: 0,
       behavior: 'smooth'
     })
-    console.log(cart)
-    console.log(favorites)
-  }, [pathname, cart, favorites])
+  }, [pathname])
 
   function showMenu() {
     setMenuActive(!menuActive)
@@ -71,23 +69,28 @@ const Header = () => {
     }
   }
 
+  /*
   React.useEffect(() => {
-    if (login) {
-      const cartLocal = JSON.parse(window.localStorage.getItem('cart') || '[]')
+    const cartLocal = JSON.parse(window.localStorage.getItem('cart') || '[]')
+    if (login && cartLocal) {
       setCart(cartLocal)
     }
   }, [login, setCart])
+  */
 
   React.useEffect(() => {
-    const valorTotal = cart?.reduce((accum, item) => {
-      return accum + item.product.price * item.quantity
-    }, 0)
-    if (valorTotal && cart) {
-      setTotal(valorTotal)
-    } else {
-      setTotal(0)
+    if (login && cart) {
+      const valorTotal = cart?.reduce((accum, item) => {
+        console.log(item.quantity)
+        return accum + item.product.price * item.quantity
+      }, 0)
+      if (valorTotal && cart) {
+        setTotal(valorTotal)
+      } else {
+        setTotal(0)
+      }
     }
-  }, [cart])
+  }, [cart, login])
 
   React.useEffect(() => {
     setMenuActive(false)

@@ -25,7 +25,7 @@ const ProductItem = ({
   const [showHover, setShowHover] = React.useState(false)
   const [fail, setFail] = React.useState(false)
   const [failMessage, setFailMessage] = React.useState('')
-  const { addCart, cart, addFavorites, removeFavorites, favorites, setFavorites } = useProducts()
+  const { addCart, cart, addFavorites, removeFavorites, favorites } = useProducts()
   const [iconFavorite, setIconFavorite] = React.useState(FavoritePink)
   const { login } = useUser()
 
@@ -59,17 +59,18 @@ const ProductItem = ({
       } else {
         setIconFavorite(FavoritePink)
         removeFavorites(_id)
-        console.log(favorites)
       }
     }
   }
 
+  /*
   React.useEffect(() => {
     if (login) {
-      const favoritesLocal = JSON.parse(window.localStorage.getItem('favorites') || '')
+      const favoritesLocal = JSON.parse(window.localStorage.getItem('favorites') || '[]')
       setFavorites(favoritesLocal)
     }
-  }, [login ,setFavorites])
+  }, [login ,setFavorites, favorites])
+  */
 
   function trueHover() {
     setShowHover(true)

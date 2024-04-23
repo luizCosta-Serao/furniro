@@ -1,6 +1,6 @@
 import React from 'react'
 import { GET_PRODUCT, GET_PRODUCTS } from '../api'
-import { useUser } from './useUser';
+//import { useUser } from './useUser';
 
 export type Product = {
   _id: string;
@@ -38,7 +38,7 @@ export const ProductsProvider = ({
   const [products, setProducts] = React.useState<Product[] | null>(null)
   const [cart, setCart] = React.useState<Cart[] | null>(null)
   const [favorites, setFavorites] = React.useState<Product[] | null>(null)
-  const { login } = useUser()
+  //const { login } = useUser()
 
   React.useEffect(() => {
     async function getProducts() {
@@ -63,7 +63,7 @@ export const ProductsProvider = ({
       const data = products?.find((product) => product._id === id)
       if (data && !cart) {
         setCart([{product: data, quantity: quantityCart}])
-        window.localStorage.setItem('cart', JSON.stringify(cart))
+        //window.localStorage.setItem('cart', JSON.stringify(cart))
       }
 
       if (cart && data) {
@@ -72,7 +72,7 @@ export const ProductsProvider = ({
           return item.product._id !== newData.product._id
         })
         setCart([...filterCart, newData])
-        window.localStorage.setItem('cart', JSON.stringify(cart))
+        //window.localStorage.setItem('cart', JSON.stringify(cart))
       }
   }
 
@@ -80,10 +80,10 @@ export const ProductsProvider = ({
     const data = products?.find((product) => product._id === id)
     if (data && !favorites) {
       setFavorites([data])
-      login && window.localStorage.setItem('favorites', JSON.stringify(favorites))
+      //login && window.localStorage.setItem('favorites', JSON.stringify(favorites))
     } else if(favorites && data) {
       setFavorites([...favorites, data])
-      login && window.localStorage.setItem('favorites', JSON.stringify(favorites))
+      //login && window.localStorage.setItem('favorites', JSON.stringify(favorites))
     }
   }
 
@@ -93,18 +93,6 @@ export const ProductsProvider = ({
       setFavorites([...data])
     }
   }
-
-  React.useEffect(() => {
-    if (cart) {
-      window.localStorage.setItem('cart', JSON.stringify(cart))
-    }
-  }, [cart])
-
-  React.useEffect(() => {
-    if (favorites) {
-      window.localStorage.setItem('favorites', JSON.stringify(favorites))
-    }
-  }, [favorites])
 
   const values = {
     products,
