@@ -3,6 +3,7 @@ import ProductItem from '../Home/Products/ProductItem'
 import styles from './ShopProducts.module.css'
 import Filter from '../../imgs/shop/filter.svg'
 import React from 'react'
+import Loading from '../Helper/Loading'
 
 const ShopProducts = () => {
   const [show, setShow] = React.useState(4)
@@ -50,14 +51,13 @@ const ShopProducts = () => {
     setToFilter(false)
   }
 
-  if (!allProducts) return null
   return (
     <section className={styles.shopProducts}>
       <div className={styles.actions}>
         <div className={`container`}>
           <div className={styles.actionsOne}>
             <p className={styles.filter} onClick={() => setToFilter(!toFilter)}><img src={Filter} alt="Filter"/> Filter</p>
-            <span className={styles.showing}>Showing {showing - show} - {showing} of {allProducts.length} results</span>
+            <span className={styles.showing}>Showing {showing - show} - {showing} of {allProducts ? allProducts.length : '?'} results</span>
             <div className={toFilter ? styles.toFilter : ''}>
               <p onClick={() => filterCategory('')}>All</p>
               <p onClick={() => filterCategory('dining')}>Dining</p>
@@ -79,29 +79,40 @@ const ShopProducts = () => {
       </div>
 
       <div className='container'>
-        <ul className={styles.listProducts}>
-          {allProducts.map((product, index) => {
-            if (index < showing && index + 1 > showing - show ) {
-              return <ProductItem
-                _id={product._id}
-                key={product._id}
-                name={product.name}
-                description={product.description}
-                price={product.price}
-                image={product.image}
-              />
-            }
-          })}
-        </ul>
+        {allProducts ? (
+          <ul className={styles.listProducts}>
+            {allProducts.map((product, index) => {
+              if (index < showing && index + 1 > showing - show ) {
+                return <ProductItem
+                  _id={product._id}
+                  key={product._id}
+                  name={product.name}
+                  description={product.description}
+                  price={product.price}
+                  image={product.image}
+                />
+              }
+            })}
+          </ul>
+        ) : (
+          <div className='container-loading'>
+            <Loading />
+          </div>
+        )}
       </div>
 
+      
       <div className={styles.pages}>
-        {allProducts.map((product, index) => {
+        {allProducts ? (allProducts.map((product, index) => {
           if (product && allProducts.length > show * index) {
             return <span key={product._id + index} onClick={() => nextProducts(index + 1)} className={`${styles.page} ${page === index + 1 ? styles.activePage : ''}`}>{index + 1}</span>
           }
-        })}
-        <span onClick={() => nextProducts(page + 1)} className={styles.next}>Next</span>
+        })) : ''}
+        {allProducts ? (
+          <span onClick={() => nextProducts(page + 1)} className={styles.next}>Next</span>
+        ) : (
+          ''
+        )}
       </div>
     </section>
   )

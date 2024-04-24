@@ -25,6 +25,7 @@ type IUserValues = {
   getUser: (id: string, token: string) => Promise<void>;
   login: boolean;
   userLogout: () => void;
+  loading: boolean;
 }
 
 export const IUserContext = React.createContext<IUserValues | null>(null)
@@ -35,6 +36,7 @@ export const IUserContextProvider = ({
   const [data, setData] = React.useState<GetUser | null>(null)
   const [error, setError] = React.useState<string | null>(null)
   const [login, setLogin] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
 
   function userLogout() {
     setData(null)
@@ -56,6 +58,7 @@ export const IUserContextProvider = ({
   async function loginUser(email: string, password: string, e: FormEvent) {
     e.preventDefault()
     try {
+      setLoading(true)
       const response = await fetch(`${url}/auth/login`, {
         method: 'POST',
         headers: {
@@ -81,6 +84,8 @@ export const IUserContextProvider = ({
         setLogin(false)
         return false
       }
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -90,7 +95,8 @@ export const IUserContextProvider = ({
     data,
     getUser,
     login,
-    userLogout
+    userLogout,
+    loading
   }
 
   return (

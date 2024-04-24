@@ -3,6 +3,7 @@ import styles from './SignupForm.module.css'
 import { url } from '../../api'
 import Success from '../Helper/Success';
 import { Link } from 'react-router-dom';
+import Loading from '../Helper/Loading';
 
 type ErrorRegister = {
   error: string;
@@ -15,10 +16,12 @@ const SignupForm = () => {
   const [confirmPassword, setConfirmPassword] = React.useState('')
   const [error, setError] = React.useState<string | null>(null)
   const [success, setSuccess] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
 
   async function RegisterUser(e: FormEvent) {
     e.preventDefault()
     try {
+      setLoading(true)
       setError(null)
       setSuccess(false)
       const response = await fetch(`${url}/auth/register`, {
@@ -44,6 +47,7 @@ const SignupForm = () => {
         }
         setSuccess(false)
       } finally {
+        setLoading(false)
         window.setTimeout(() => {
           setSuccess(false)
         }, 3000)
@@ -67,11 +71,15 @@ const SignupForm = () => {
 
         {error && <p style={{color: 'red', marginBottom: '1rem', fontWeight: '500', fontSize: '1.1rem'}}>{error}</p>}
         {success && <Success>{name} successfully registered</Success>}
-        <div className={styles.signupAndLogin}>
-          <button type='submit' className={styles.submit}>Register</button>
-          <span>Or</span>
-          <Link className={styles.login} to={'/login'}>Login</Link>
-        </div>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className={styles.signupAndLogin}>
+            <button type='submit' className={styles.submit}>Register</button>
+            <span>Or</span>
+            <Link className={styles.login} to={'/login'}>Login</Link>
+          </div>
+        )}
       </form>
     </section>
   ) 

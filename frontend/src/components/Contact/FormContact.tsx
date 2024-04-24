@@ -2,6 +2,7 @@ import React, { FormEvent } from 'react'
 import styles from './FormContact.module.css'
 import { url } from '../../api'
 import Success from '../Helper/Success'
+import Loading from '../Helper/Loading'
 
 type ErrorMessage = {
   message: string;
@@ -14,10 +15,12 @@ const FormContact = () => {
   const [message, setMessage] = React.useState('')
   const [success, setSuccess] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
+  const [loading, setLoading] = React.useState(false)
 
   async function sendMessage(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault()
     try {
+      setLoading(true)
       setError(null)
       const response = await fetch(`${url}/contact`, {
         method: 'POST',
@@ -42,6 +45,7 @@ const FormContact = () => {
       }
       setSuccess(false)
     } finally {
+      setLoading(false)
       window.setTimeout(() => {
         setSuccess(false)
       }, 3000)
@@ -63,7 +67,11 @@ const FormContact = () => {
       <textarea name="message" id="message" placeholder='Hi! i’d like to ask about' value={message} onChange={(e) => setMessage(e.target.value)} required/>
 
       {error && <p style={{color: 'red', marginBottom: '1rem', fontWeight: '500', fontSize: '1.1rem'}}>{error}</p>}
-      <button className={styles.submit} type='submit' onClick={sendMessage}>Submit</button>
+      {loading ? (
+        <Loading />
+      ) : (
+        <button className={styles.submit} type='submit' onClick={sendMessage}>Submit</button>
+      )}
       {success && <Success>Message sent successfully</Success>}
     </form>
   )
