@@ -2,11 +2,12 @@ import React, { FormEvent } from "react"
 import styles from './LoginForm.module.css'
 import { useUser } from "../../context/useUser"
 import { useNavigate } from "react-router-dom"
+import Loading from "../Helper/Loading"
 
 const LoginForm = () => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const { loginUser, error } = useUser()
+  const { loginUser, error, loading } = useUser()
   const navigate = useNavigate()
 
   async function login(e: FormEvent) {
@@ -30,7 +31,13 @@ const LoginForm = () => {
         <input type="password" id="password" name="password" placeholder="Your password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
         {error && <p style={{color: 'red', marginBottom: '1rem', fontWeight: '500', fontSize: '1.1rem'}}>{error}</p>}
-        <button className={styles.submit} type="submit">Login</button>
+        {loading ? (
+          <div className="container-loading" style={{marginTop: '0px', marginBottom: '0px'}}>
+            <Loading />
+          </div>
+        ) : (
+          <button className={styles.submit} type="submit">Login</button>
+        )}
       </form>
     </section>
   )
