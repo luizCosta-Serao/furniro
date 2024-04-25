@@ -9,6 +9,7 @@ const stripe = require('stripe')(process.env.STRIPE_API_SECRET)
 const ProductsController = require('./controllers/ProductsController')
 const ProductController = require('./controllers/ProductController')
 const ContactController = require('./controllers/ContactController')
+const UserController = require('./controllers/UserController')
 
 // Rotas Products
 routes.get('/products', ProductsController.read)
@@ -50,5 +51,8 @@ routes.post('/create-checkout-session', async (req, res) => {
     url: session.url
   });
 });
+
+routes.post('/user/cart/:id', UserController.addCart)
+routes.post('/user/favorites/:id', UserController.addFavorites)
 
 module.exports = routes
