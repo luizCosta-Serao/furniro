@@ -3,6 +3,7 @@ import styles from './Products.module.css'
 import { GET_PRODUCTS} from '../../../api';
 import ProductItem from './ProductItem';
 import Loading from '../../Helper/Loading';
+import { Product } from '../../../context/ProductsContext';
 
 export type Products = {
   _id: string;
@@ -15,7 +16,7 @@ export type Products = {
 }
 
 const Products = () => {
-  const [products, setProducts] = React.useState<Products[] | null>(null)
+  const [products, setProducts] = React.useState<Product[] | null>(null)
 
   React.useEffect(() => {
     async function fetchProducts() {

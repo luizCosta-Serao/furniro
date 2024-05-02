@@ -88,9 +88,9 @@ const ProductItem = ({
     } else {
       const products = cart?.find((item) => item._id === _id)
       if (products) {
-        await addCart(_id, products.quantity + 1)
+        await addCart(_id)
       } else {
-        await addCart(_id, 1)
+        await addCart(_id)
       }
     }
   }
