@@ -1,5 +1,6 @@
 import React from 'react'
-import { GET_PRODUCT, GET_PRODUCTS } from '../api'
+import { GET_PRODUCT, GET_PRODUCTS, url } from '../api'
+import { useUser } from './useUser';
 //import { useUser } from './useUser';
 
 export type Product = {
@@ -8,12 +9,19 @@ export type Product = {
   description: string
   price: number;
   image: string;
-  stock: number;
-  category: string;
+  stock?: number;
+  category?: string;
+  quantity?: number;
 }
 
 export type Cart = {
-  product: Product;
+  _id: string;
+  name: string;
+  description: string
+  price: number;
+  image: string;
+  stock: number;
+  category: string;
   quantity: number;
 }
 
@@ -22,12 +30,13 @@ export type IProductsValues = {
   getSingleProduct: (id: string) => Promise<Product>;
   filterCategory: (category: string) => Promise<Product[] | undefined>;
   cart: Cart[] | null;
-  addCart: (id: string, quantity: number) => Promise<void>;
+  addCart: (id: string) => Promise<void>;
   setCart: React.Dispatch<React.SetStateAction<Cart[] | null>>;
   addFavorites: (id: string) => void;
   removeFavorites: (id: string) => void;
   favorites: Product[] | null;
   setFavorites: React.Dispatch<React.SetStateAction<Product[] | null>>;
+  getCart: () => Promise<void>
 }
 
 export const ProductsContext = React.createContext<IProductsValues | null>(null)
@@ -38,16 +47,36 @@ export const ProductsProvider = ({
   const [products, setProducts] = React.useState<Product[] | null>(null)
   const [cart, setCart] = React.useState<Cart[] | null>(null)
   const [favorites, setFavorites] = React.useState<Product[] | null>(null)
-  //const { login } = useUser()
+  const { login, data } = useUser()
 
   React.useEffect(() => {
     async function getProducts() {
-      const data = await GET_PRODUCTS()
-      setProducts(data)
-
+      const dataProd = await GET_PRODUCTS()
+      setProducts(dataProd)
     }
     getProducts()
   }, [])
+
+  React.useEffect(() => {
+    async function getCart() {
+      if (login && data) {
+        const response = await fetch(`${url}/user/cart/${data?._id}`)
+        const json = await response.json() as Cart[]
+        if (json)
+        setCart(json)
+      }
+    }
+    getCart()
+  }, [data, login])
+
+  async function getCart() {
+    if (login && data) {
+      const response = await fetch(`${url}/user/cart/${data?._id}`)
+      const json = await response.json() as Cart[]
+      if (json)
+      setCart(json)
+    }
+  }
 
   async function getSingleProduct(id: string) {
     const data = await GET_PRODUCT(id)
@@ -59,38 +88,76 @@ export const ProductsProvider = ({
     return data
   }
 
-  async function addCart(id: string, quantityCart: number) {
-      const data = products?.find((product) => product._id === id)
-      if (data && !cart) {
-        setCart([{product: data, quantity: quantityCart}])
-        //window.localStorage.setItem('cart', JSON.stringify(cart))
-      }
-
-      if (cart && data) {
-        const newData: Cart = {product: data, quantity: quantityCart}
-        const filterCart = cart.filter((item) => {
-          return item.product._id !== newData.product._id
-        })
-        setCart([...filterCart, newData])
-        //window.localStorage.setItem('cart', JSON.stringify(cart))
+  async function addCart(id: string) {
+      const dataProduct = products?.find((product) => product._id === id)
+      if (login) {
+        try {
+          await fetch(`${url}/user/cart/${data?._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              idProduct: dataProduct?._id
+            })
+          })
+          await getCart()
+        } catch (err) {
+          console.log(err)
+        }
       }
   }
 
-  function addFavorites(id: string) {
-    const data = products?.find((product) => product._id === id)
-    if (data && !favorites) {
-      setFavorites([data])
-      //login && window.localStorage.setItem('favorites', JSON.stringify(favorites))
-    } else if(favorites && data) {
-      setFavorites([...favorites, data])
-      //login && window.localStorage.setItem('favorites', JSON.stringify(favorites))
+  async function getFavorites() {
+    if (login) {
+      try {
+        const response = await fetch(`${url}/user/favorites/${data?._id}`, {
+          method: 'GET'
+        })
+        const json = await response.json() as Product[]
+        setFavorites(json)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
-  function removeFavorites(id: string) {
-    const data = favorites?.filter((favorite) => favorite._id !== id)
-    if (data) {
-      setFavorites([...data])
+  async function addFavorites(id: string) {
+    const dataProduct = products?.find((product) => product._id === id)
+    if (login && data && dataProduct) {
+      try {
+        await fetch(`${url}/user/favorites/${data._id}`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            idFavorites: dataProduct._id
+          })
+        })
+        await getFavorites()
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+
+  async function removeFavorites(id: string) {
+    const dataFav = favorites?.find((favorite) => favorite._id === id)
+    if (data && login && dataFav)
+    try {
+      await fetch(`${url}/user/favorites/update/${data._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          idFavorites: dataFav._id
+        })
+      })
+      await getFavorites()
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -104,7 +171,8 @@ export const ProductsProvider = ({
     addFavorites,
     removeFavorites,
     favorites,
-    setFavorites
+    setFavorites,
+    getCart
   }
 
   return (

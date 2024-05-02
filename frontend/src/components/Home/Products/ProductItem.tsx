@@ -2,18 +2,12 @@ import React from 'react'
 import styles from './ProductItem.module.css'
 import { Link } from 'react-router-dom';
 import { useProducts } from '../../../context/useProducts';
+import { Product } from '../../../context/ProductsContext'
 import FavoritePink from '../../../imgs/favorites/favorite-pink.png'
 import FavoriteRed from '../../../imgs/favorites/favorite-red.png'
 import { useUser } from '../../../context/useUser';
 import Fail from '../../Helper/Fail';
-
-type Product = {
-  name: string;
-  description: string;
-  image: string;
-  price: number;
-  _id: string;
-}
+import { url } from '../../../api';
 
 const ProductItem = ({
   name,
@@ -25,7 +19,8 @@ const ProductItem = ({
   const [showHover, setShowHover] = React.useState(false)
   const [fail, setFail] = React.useState(false)
   const [failMessage, setFailMessage] = React.useState('')
-  const { addCart, cart, addFavorites, removeFavorites, favorites } = useProducts()
+  const { addCart, cart, addFavorites, removeFavorites } = useProducts()
+  const { data } = useUser()
   const [iconFavorite, setIconFavorite] = React.useState(FavoritePink)
   const { login } = useUser()
 
@@ -37,15 +32,26 @@ const ProductItem = ({
   }
 
   React.useEffect(() => {
-    if (login) {
-      const findFavorite = favorites?.find((favorite) => favorite._id === _id)
-      if (findFavorite) {
-        setIconFavorite(FavoriteRed)
+    async function getFavorites() {
+      if (login) {
+        try {
+          const response = await fetch(`${url}/user/favorites/${data?._id}`, {
+            method: 'GET'
+          })
+          const json = await response.json() as Product[]
+          const fav = json.find((item) => item._id === _id)
+          if (fav) {
+            setIconFavorite(FavoriteRed)
+          }
+        } catch (error) {
+          console.log(error)
+        }
       }
     }
-  }, [favorites, _id, login])
+    getFavorites()
+  }, [data, _id, login])
 
-  function toFavorite() {
+  async function toFavorite() {
     if (!login) {
       setFailMessage('login to add to favorites')
       setFail(true)
@@ -62,15 +68,6 @@ const ProductItem = ({
       }
     }
   }
-
-  /*
-  React.useEffect(() => {
-    if (login) {
-      const favoritesLocal = JSON.parse(window.localStorage.getItem('favorites') || '[]')
-      setFavorites(favoritesLocal)
-    }
-  }, [login ,setFavorites, favorites])
-  */
 
   function trueHover() {
     setShowHover(true)
@@ -89,7 +86,7 @@ const ProductItem = ({
         setFailMessage('')
       }, 2000)
     } else {
-      const products = cart?.find((item) => item.product._id === _id)
+      const products = cart?.find((item) => item._id === _id)
       if (products) {
         await addCart(_id, products.quantity + 1)
       } else {

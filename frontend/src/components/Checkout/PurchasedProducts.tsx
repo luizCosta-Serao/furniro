@@ -15,7 +15,7 @@ const PurchasedProducts = () => {
 
   React.useEffect(() => {
     const totalValue = cart?.reduce((accum, item) => {
-      return accum + ( item.quantity * item.product.price )
+      return accum + ( item.quantity * item.price )
     }, 0)
     totalValue ? setTotal(totalValue) : setTotal(0)
   }, [cart])
@@ -26,13 +26,13 @@ const PurchasedProducts = () => {
         <div className={styles.product}>
           <h2>Product</h2>
           {products && products.map((product) => (
-            <p key={product.product._id} className={styles.itemProduct}>{product.product.name} <span> x {product.quantity}</span></p>
+            <p key={product._id} className={styles.itemProduct}>{product.name} <span> x {product.quantity}</span></p>
           ))}
         </div>
         <div className={styles.subtotal}>
           <h2>Subtotal</h2>
           {products && products.map((product) => (
-            <p key={product.product._id} className={styles.itemPrice}>{product.product.price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</p>
+            <p key={product._id} className={styles.itemPrice}>{product.price.toLocaleString('en-US', {style: 'currency', currency: 'USD'})}</p>
           ))}
         </div>
       </div>

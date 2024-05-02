@@ -15,6 +15,26 @@ type GetUser = {
   _id: string;
   name: string;
   email: string;
+  cart: [
+    {
+      _id: string,
+      name: string,
+      price: number,
+      image: string,
+      quantity: number
+    }
+  ],
+  favorites: [
+    {
+      _id: string,
+      name: string,
+      description: string,
+      price: number,
+      image: string,
+      stock: number,
+      category: string
+    }
+  ]
 }
 
 
