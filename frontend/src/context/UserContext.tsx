@@ -58,10 +58,25 @@ export const IUserContextProvider = ({
   const [login, setLogin] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
 
+  React.useEffect(() => {
+    async function autoLogin() {
+      const token = window.localStorage.getItem('token')
+      const id = window.localStorage.getItem('idUser')
+      if (token && !login && id) {
+        await getUser(id, token)
+        setLogin(true)
+      }
+    }
+    autoLogin()
+  }, [login])
+
+  
   function userLogout() {
     setData(null)
     setError(null)
     setLogin(false)
+    window.localStorage.setItem('token', '')
+    window.localStorage.setItem('idUser', '')
   }
 
   async function getUser(id: string, token: string) {
@@ -95,6 +110,7 @@ export const IUserContextProvider = ({
       }
       const json = await response.json() as SuccessLogn
       window.localStorage.setItem('token', json.token)
+      window.localStorage.setItem('idUser', json._id)
       await getUser(json._id, json.token)
       setLogin(true)
       return true
@@ -116,7 +132,7 @@ export const IUserContextProvider = ({
     getUser,
     login,
     userLogout,
-    loading
+    loading,
   }
 
   return (

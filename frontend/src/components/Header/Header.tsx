@@ -61,29 +61,6 @@ const Header = () => {
     } catch (err) {
       console.log(err)
     }
-    /*
-    if (cart && findProduct && findProduct?.quantity > 1) {
-      const mapProducts = cart.map((item) => {
-        if (item.quantity > 1 && item.product._id === id) {
-          return {
-            product: item.product,
-            quantity: item.quantity - 1
-          }
-        } else {
-          return {
-            product: item.product,
-            quantity: item.quantity
-          }
-        }
-      })
-      mapProducts && setCart(mapProducts)
-    } else {
-      const products = cart?.filter((item) => {
-        return item.product._id !== id
-      })
-      products && setCart(products)
-    }
-    */
   }
 
   React.useEffect(() => {
