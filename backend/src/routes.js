@@ -27,14 +27,14 @@ routes.post('/create-checkout-session', async (req, res) => {
       price_data: {
         currency: 'usd',
         product_data: {
-          name: item.product.name,
-          images: [item.product.image],
-          description: item.product.description,
+          name: item.name,
+          images: [item.image],
+          description: item.description,
           metadata: {
-            id: item.product._id
+            id: item._id
           }
         },
-        unit_amount: item.product.price * 100,
+        unit_amount: item.price * 100,
       },
       quantity: item.quantity,
     }
@@ -52,7 +52,11 @@ routes.post('/create-checkout-session', async (req, res) => {
   });
 });
 
+routes.get('/user/cart/:id', UserController.getCart)
 routes.post('/user/cart/:id', UserController.addCart)
+routes.post('/user/cart/update/:id', UserController.removeCart)
+routes.get('/user/favorites/:id', UserController.getFavorites)
 routes.post('/user/favorites/:id', UserController.addFavorites)
+routes.post('/user/favorites/update/:id', UserController.removeFavorites)
 
 module.exports = routes

@@ -16,7 +16,7 @@ const InfoProduct = () => {
   const { getSingleProduct } = useProducts()
   const { id } = useParams()
   const { login } = useUser()
-  const { cart, addCart } = useProducts()
+  const { addCart } = useProducts()
   const [failMessage, setFailMessage] = React.useState('')
   const [fail, setFail] = React.useState(false)
 
@@ -29,12 +29,7 @@ const InfoProduct = () => {
         setFailMessage('')
       }, 2000)
     } else {
-      const products = cart?.find((item) => item.product._id === id)
-      if (products && id) {
-        await addCart(id, products.quantity + 1)
-      } else if (id) {
-        await addCart(id, 1)
-      }
+      id && await addCart(id)
     }
   }
 
@@ -49,7 +44,7 @@ const InfoProduct = () => {
   }, [getSingleProduct, id])
 
   function addQuantity() {
-    if (product && quantity < product?.stock) {
+    if (product && product.stock && quantity < product.stock) {
       setQuantity(quantity + 1)
     }
   }

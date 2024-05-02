@@ -11,12 +11,13 @@ import { useProducts } from '../../context/useProducts'
 import DeleteSVG from '../../imgs/delete.svg'
 import { useUser } from '../../context/useUser'
 import Fail from '../Helper/Fail'
+import { url } from '../../api'
 
 const Header = () => {
   const [menuActive, setMenuActive] = React.useState(false)
   const [cartActive, setCartActive] = React.useState(false)
   const [fail, setFail] = React.useState(false)
-  const { cart, setCart } = useProducts()
+  const { cart, getCart } = useProducts()
   const { data, login, userLogout } = useUser()
   const [total, setTotal] = React.useState(0)
   const { pathname } = useLocation()
@@ -26,11 +27,12 @@ const Header = () => {
       top: 0,
       behavior: 'smooth'
     })
-  }, [pathname])
+  }, [pathname, data])
 
   function showMenu() {
     setMenuActive(!menuActive)
     setCartActive(false)
+    
   }
 
   function showCart() {
@@ -44,8 +46,22 @@ const Header = () => {
     }
   }
 
-  function deleteProduct(id: string) {
-    const findProduct = cart?.find((item) => item.product._id === id)
+  async function deleteProduct(id: string) {
+    try {
+      await fetch(`${url}/user/cart/update/${data?._id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          removeCart: id
+        })
+      })
+      await getCart()
+    } catch (err) {
+      console.log(err)
+    }
+    /*
     if (cart && findProduct && findProduct?.quantity > 1) {
       const mapProducts = cart.map((item) => {
         if (item.quantity > 1 && item.product._id === id) {
@@ -67,22 +83,13 @@ const Header = () => {
       })
       products && setCart(products)
     }
+    */
   }
-
-  /*
-  React.useEffect(() => {
-    const cartLocal = JSON.parse(window.localStorage.getItem('cart') || '[]')
-    if (login && cartLocal) {
-      setCart(cartLocal)
-    }
-  }, [login, setCart])
-  */
 
   React.useEffect(() => {
     if (login && cart) {
       const valorTotal = cart?.reduce((accum, item) => {
-        console.log(item.quantity)
-        return accum + item.product.price * item.quantity
+        return accum + item.price * item.quantity
       }, 0)
       if (valorTotal && cart) {
         setTotal(valorTotal)
@@ -142,13 +149,13 @@ const Header = () => {
             <h2>Shopping Cart</h2>
             <ul>
               {cart && cart.map((product) => (
-                <li key={product.product._id}>
-                  <img className={styles.imgProduct} src={product.product.image} alt={product.product.name} />
+                <li key={product._id}>
+                  <img className={styles.imgProduct} src={product.image} alt={product.name} />
                   <div>
-                    <h2>{product.product.name}</h2>
-                    <p className={styles.priceProduct}><span className={styles.quantityProduct}>{product.quantity} x </span> {product.product.price}</p>
+                    <h2>{product.name}</h2>
+                    <p className={styles.priceProduct}><span className={styles.quantityProduct}>{product.quantity} x </span> {product.price}</p>
                   </div>
-                  <img className={styles.deleteProduct} onClick={() => deleteProduct(product.product._id)} src={DeleteSVG} alt="X" />
+                  <img className={styles.deleteProduct} onClick={() => deleteProduct(product._id)} src={DeleteSVG} alt="X" />
                 </li>
               ))}
             </ul>
