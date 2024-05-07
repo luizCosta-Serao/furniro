@@ -10,9 +10,9 @@ const Categories = () => {
       <h2 className={styles.title}>Browse The Range</h2>
       <p className={styles.description}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
       <ul className={styles.listCategories}>
-        <Category src={Dining} alt='Dining' title='Dining' pathCategory='dining' />
-        <Category src={Living} alt='Living' title='Living' pathCategory='living' />
-        <Category src={Bedroom} alt='Bedroom' title='Bedroom' pathCategory='bedroom' />
+        <Category src={Dining} alt='Dining' title='Dining' />
+        <Category src={Living} alt='Living' title='Living' />
+        <Category src={Bedroom} alt='Bedroom' title='Bedroom' />
       </ul>
     </section>
   )
